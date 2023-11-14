@@ -17,11 +17,12 @@ type DeleteManyResponse = {
 };
 
 export const createBeatSheet = async (title: string) => {
-  return db.beatSheet.create({
+  const response = await db.beatSheet.create({
     data: {
       title,
     },
   });
+  return response;
 };
 
 export const createAct = async (
@@ -37,6 +38,19 @@ export const createAct = async (
     },
   });
   return act;
+};
+
+export const updateAct = async (
+  actId: string,
+  updateData: Partial<Act>
+): Promise<Act> => {
+  const updatedAct = await db.act.update({
+    where: {
+      id: actId,
+    },
+    data: updateData,
+  });
+  return updatedAct;
 };
 
 export const createBeat = async (

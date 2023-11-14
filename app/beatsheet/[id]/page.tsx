@@ -39,11 +39,7 @@ export default function BeatSheetPage({ params }: { params: { id: string } }) {
           <>
             {beatSheet.acts.map((act, i) => (
               <div key={act.id}>
-                <Act
-                  act={act as ActType & { beats: Beat[] }}
-                  number={i + 1}
-                  beatSheetId={id}
-                />
+                <Act act={act as ActType & { beats: Beat[] }} number={i + 1} />
               </div>
             ))}
           </>

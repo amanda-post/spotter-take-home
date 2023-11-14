@@ -34,6 +34,7 @@ export default function BeatSheetPage({ params }: { params: { id: string } }) {
     <main className='p-10'>
       <ArrowLeft className='cursor-pointer' onClick={returnToDashboard} />
       <div className='flex flex-col'>
+        <h3>{beatSheet?.title}</h3>
         {beatSheet && !!beatSheet.acts.length ? (
           <>
             {beatSheet.acts.map((act, i) => (

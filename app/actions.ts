@@ -16,10 +16,10 @@ type DeleteManyResponse = {
   count: number;
 };
 
-export const createBeatSheet = async () => {
+export const createBeatSheet = async (title: string) => {
   return db.beatSheet.create({
     data: {
-      title: 'Untitled',
+      title,
     },
   });
 };

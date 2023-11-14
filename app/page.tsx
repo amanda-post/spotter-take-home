@@ -1,12 +1,13 @@
 'use client';
 import { BeatSheet } from '@prisma/client';
-import { PlusCircle } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import { createBeatSheet } from '~/app/actions';
+import AddBeatSheet from '~/app/beatsheet/[id]/components/AddBeatSheet';
 
 export default function Home() {
   const [beatSheets, setBeatSheets] = useState<BeatSheet[]>([]);
+  const [beatSheetTitle, setBeatSheetTitle] = useState<string>('');
   const router = useRouter();
 
   const goToSheet = (id: string) => {
@@ -14,7 +15,7 @@ export default function Home() {
   };
 
   const createNew = () => {
-    createBeatSheet().then(({ id }) => {
+    createBeatSheet(beatSheetTitle).then(({ id }) => {
       goToSheet(id);
     });
   };
@@ -40,9 +41,7 @@ export default function Home() {
             {beatSheet.title}
           </div>
         ))}
-      <div className='flex cursor-pointer' onClick={createNew}>
-        <PlusCircle size={24} /> Create new beatsheet
-      </div>
+      <AddBeatSheet />
     </main>
   );
 }

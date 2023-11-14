@@ -1,0 +1,46 @@
+datasource db {
+  provider     = "mysql"
+  url          = env("DATABASE_URL")
+  relationMode = "prisma"
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model BeatSheet {
+  id String @id @default(uuid())
+
+  title String
+  acts  Act[]
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Act {
+  id String @id @default(uuid())
+
+  description String
+  timestamp   DateTime
+  beats       Beat[]
+  beatSheetId String
+  beatSheet   BeatSheet @relation(fields: [beatSheetId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}
+
+model Beat {
+  id String @id @default(uuid())
+
+  description String
+  timestamp   DateTime
+  duration    Int // in seconds
+  cameraAngle String
+  actId       String
+  act         Act      @relation(fields: [actId], references: [id])
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now()) @updatedAt
+}

@@ -4,12 +4,10 @@ import { db } from '~/lib/db';
 
 export type ActData = {
   description: string;
-  timestamp: Date;
 };
 
 export type BeatData = {
   description: string;
-  timestamp: Date;
   duration: number;
   cameraAngle: string;
 };
@@ -33,7 +31,6 @@ export const createAct = async (
   const act = await db.act.create({
     data: {
       description: actData.description,
-      timestamp: actData.timestamp,
       beatSheet: {
         connect: { id: beatSheetId },
       },
@@ -49,7 +46,6 @@ export const createBeat = async (
   const beat = await db.beat.create({
     data: {
       description: beatData.description,
-      timestamp: beatData.timestamp,
       duration: beatData.duration,
       cameraAngle: beatData.cameraAngle,
       act: {

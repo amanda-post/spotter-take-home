@@ -1,20 +1,20 @@
 'use client';
 
-import { Beat as BeatType } from '@prisma/client';
-import { usePathname } from 'next/navigation';
+import { Act, Beat as BeatType } from '@prisma/client';
 import AddBeat from '~/app/beatsheet/[id]/components/AddBeat';
 import Beat from '~/app/beatsheet/[id]/components/Beat';
 
 export default function Act({
   act,
   number,
+  beatSheetId,
 }: {
-  act: { description: string; beats: BeatType[] };
+  act: Act & { beats: BeatType[] };
   number: number;
+  beatSheetId: string;
 }) {
+  console.log({ act });
   const { description, beats } = act;
-  const pathname = usePathname();
-  const isEditing = pathname.endsWith('/edit');
 
   return (
     <div className='p-10'>
@@ -28,7 +28,7 @@ export default function Act({
               <Beat beat={beat} />
             </div>
           ))}
-        {!!isEditing && <AddBeat />}
+        <AddBeat actId={act.id} />
       </div>
     </div>
   );

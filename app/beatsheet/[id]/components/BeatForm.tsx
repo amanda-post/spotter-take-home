@@ -1,6 +1,7 @@
 'use client';
 import { Beat } from '@prisma/client';
 import { useState } from 'react';
+import { MutatorCallback } from 'swr';
 import { createBeat, updateBeat } from '~/app/actions';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -10,11 +11,13 @@ export default function BeatForm({
   actId,
   showForm,
   setShowForm,
+  mutate,
 }: {
   beatData?: Beat;
   actId?: string;
   showForm: boolean;
   setShowForm: (showForm: boolean) => void;
+  mutate: MutatorCallback;
 }) {
   const [description, setDescription] = useState(
     beatData ? beatData.description : ''
@@ -36,12 +39,13 @@ export default function BeatForm({
     setDuration(Number(e.target.value));
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     if (actId) {
-      createBeat(actId, { description, duration, cameraAngle });
+      await createBeat(actId, { description, duration, cameraAngle });
     } else if (beatData?.id) {
-      updateBeat(beatData.id, { description, duration, cameraAngle });
+      await updateBeat(beatData.id, { description, duration, cameraAngle });
     }
+    mutate();
     setDescription('');
     setCameraAngle('');
     setDuration(0);

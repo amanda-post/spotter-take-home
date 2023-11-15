@@ -3,6 +3,7 @@
 import { Beat } from '@prisma/client';
 import { Menu } from 'lucide-react';
 import { useState } from 'react';
+import { MutatorCallback } from 'swr';
 import { deleteBeat } from '~/app/actions';
 import BeatForm from '~/app/beatsheet/[id]/components/BeatForm';
 import {
@@ -14,12 +15,19 @@ import {
 
 const BeatRowClasses = 'text-element-bold';
 
-export default function Beat({ beat }: { beat: Beat }) {
+export default function Beat({
+  beat,
+  mutate,
+}: {
+  beat: Beat;
+  mutate: MutatorCallback;
+}) {
   const [editMode, setEditMode] = useState(false);
   const { description, duration, cameraAngle } = beat;
 
-  const handleDeleteBeat = () => {
-    deleteBeat(beat.id);
+  const handleDeleteBeat = async () => {
+    await deleteBeat(beat.id);
+    mutate();
   };
 
   return (
@@ -29,6 +37,7 @@ export default function Beat({ beat }: { beat: Beat }) {
           beatData={beat}
           showForm={editMode}
           setShowForm={setEditMode}
+          mutate={mutate}
         />
       ) : (
         <div className='border-2 border-gray-800 rounded-lg p-5 space-y-2'>

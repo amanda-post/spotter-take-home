@@ -3,6 +3,7 @@
 import { Act, Beat as BeatType } from '@prisma/client';
 import { Menu, PlusCircle } from 'lucide-react';
 import { useState } from 'react';
+import { MutatorCallback } from 'swr';
 import { deleteActAndBeats, updateAct } from '~/app/actions';
 import Beat from '~/app/beatsheet/[id]/components/Beat';
 import BeatForm from '~/app/beatsheet/[id]/components/BeatForm';
@@ -55,14 +56,17 @@ export const DeleteActModal = ({
 export default function Act({
   act,
   number,
+  mutate,
 }: {
   act: Act & { beats: BeatType[] };
   number: number;
+  mutate: MutatorCallback;
 }) {
   const [editActMode, setEditActMode] = useState(false);
   const [editBeatMode, setEditBeatMode] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [actDescription, setActDescription] = useState(act.description);
+
   const { description, beats } = act;
 
   const toggleEditActMode = () => {
@@ -81,12 +85,14 @@ export default function Act({
     setActDescription(e.target.value);
   };
 
-  const handleSaveAct = () => {
-    updateAct(act.id, { description: actDescription });
+  const handleSaveAct = async () => {
+    await updateAct(act.id, { description: actDescription });
+    mutate();
   };
 
-  const handleDeleteAct = () => {
-    deleteActAndBeats(act.id);
+  const handleDeleteAct = async () => {
+    await deleteActAndBeats(act.id);
+    mutate();
   };
 
   return (
@@ -144,13 +150,14 @@ export default function Act({
         {!!beats &&
           beats.map((beat: BeatType) => (
             <div key={beat.id}>
-              <Beat beat={beat} />
+              <Beat beat={beat} mutate={mutate} />
             </div>
           ))}
         <BeatForm
           actId={act.id}
           showForm={editBeatMode}
           setShowForm={setEditBeatMode}
+          mutate={mutate}
         />
       </div>
     </div>

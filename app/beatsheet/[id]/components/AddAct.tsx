@@ -1,6 +1,7 @@
 'use client';
 import { PlusCircle } from 'lucide-react';
 import { useState } from 'react';
+import { useSWRConfig } from 'swr';
 import { createAct } from '~/app/actions';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -8,6 +9,7 @@ import { Input } from '~/components/ui/input';
 export default function AddAct({ beatSheetId }: { beatSheetId: string }) {
   const [showForm, setShowForm] = useState(false);
   const [description, setDescription] = useState('');
+  const { mutate } = useSWRConfig();
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -21,6 +23,7 @@ export default function AddAct({ beatSheetId }: { beatSheetId: string }) {
     await createAct(beatSheetId, { description });
     setDescription('');
     setShowForm(false);
+    mutate(`/api/beatsheets/${beatSheetId}`);
   };
 
   return (

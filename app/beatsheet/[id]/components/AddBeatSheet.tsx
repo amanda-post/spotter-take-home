@@ -1,6 +1,7 @@
 'use client';
 import { PlusCircle } from 'lucide-react';
 import { useState } from 'react';
+import { useSWRConfig } from 'swr';
 import { createBeatSheet } from '~/app/actions';
 import { Button } from '~/components/ui/button';
 import { Input } from '~/components/ui/input';
@@ -8,6 +9,7 @@ import { Input } from '~/components/ui/input';
 export default function AddBeatSheet() {
   const [showForm, setShowForm] = useState(false);
   const [title, setTitle] = useState('');
+  const { mutate } = useSWRConfig();
 
   const toggleForm = () => {
     setShowForm(!showForm);
@@ -17,8 +19,11 @@ export default function AddBeatSheet() {
     setTitle(e.target.value);
   };
 
-  const handleSubmit = () => {
-    createBeatSheet(title);
+  const handleSubmit = async () => {
+    await createBeatSheet(title);
+    setShowForm(false);
+    setTitle('');
+    mutate('/api/beatsheets');
   };
 
   return (

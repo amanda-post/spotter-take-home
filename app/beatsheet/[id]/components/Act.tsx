@@ -146,7 +146,7 @@ export default function Act({
           </DropdownMenu>
         </span>
       </div>
-      <div className='flex'>
+      <div className='flex flex-wrap'>
         {!!beats &&
           beats.map((beat: BeatType) => (
             <div key={beat.id}>

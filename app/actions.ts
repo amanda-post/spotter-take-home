@@ -25,6 +25,16 @@ export const createBeatSheet = async (title: string) => {
   return response;
 };
 
+export const updateBeatSheet = async (beatSheetId: string, title: string) => {
+  const updatedBeatSheet = await db.beatSheet.update({
+    where: {
+      id: beatSheetId,
+    },
+    data: { title },
+  });
+  return updatedBeatSheet;
+};
+
 export const createAct = async (
   beatSheetId: string,
   actData: ActData

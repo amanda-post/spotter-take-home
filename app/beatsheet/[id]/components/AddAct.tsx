@@ -17,26 +17,26 @@ export default function AddAct({ beatSheetId }: { beatSheetId: string }) {
     setDescription(e.target.value);
   };
 
-  const handleSubmit = () => {
-    createAct(beatSheetId, { description });
+  const handleSubmit = async () => {
+    await createAct(beatSheetId, { description });
+    setDescription('');
+    setShowForm(false);
   };
 
   return (
     <div className='p-4 flex flex-col w-1/2'>
-      <div className='flex cursor-pointer' onClick={toggleForm}>
-        {showForm ? (
-          'Adding new act'
-        ) : (
-          <>
-            <PlusCircle /> Add new act
-          </>
+      <div className='cursor-pointer' onClick={toggleForm}>
+        {showForm ? null : (
+          <span className='font-bold text-lg flex'>
+            <PlusCircle className='mr-3' /> Add new act
+          </span>
         )}
       </div>
 
       {showForm && (
         <div>
-          <div>
-            Description:{' '}
+          <div className='space-y-4'>
+            <p>Act Description: </p>
             <Input value={description} onChange={handleTextChange} />
             <Button onClick={handleSubmit} disabled={!description}>
               Save

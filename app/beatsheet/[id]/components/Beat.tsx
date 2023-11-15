@@ -1,18 +1,29 @@
 'use client';
 
 import { Beat } from '@prisma/client';
+import { Menu } from 'lucide-react';
 import { useState } from 'react';
+import { deleteBeat } from '~/app/actions';
 import BeatForm from '~/app/beatsheet/[id]/components/BeatForm';
-import { Button } from '~/components/ui/button';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from '~/components/ui/dropdown-menu';
 
-const BeatRowClasses = 'pt-4 text-element-bold';
+const BeatRowClasses = 'text-element-bold';
 
 export default function Beat({ beat }: { beat: Beat }) {
   const [editMode, setEditMode] = useState(false);
   const { description, duration, cameraAngle } = beat;
 
+  const handleDeleteBeat = () => {
+    deleteBeat(beat.id);
+  };
+
   return (
-    <div className='p-10'>
+    <div className='p-5'>
       {editMode ? (
         <BeatForm
           beatData={beat}
@@ -20,9 +31,26 @@ export default function Beat({ beat }: { beat: Beat }) {
           setShowForm={setEditMode}
         />
       ) : (
-        <>
+        <div className='border-2 border-gray-800 rounded-lg p-5 space-y-2'>
           <div className={BeatRowClasses}>
-            Beat Description: <div>{description}</div>
+            <span className='flex'>
+              Beat Description:
+              <DropdownMenu>
+                <DropdownMenuTrigger asChild>
+                  <Menu className='ml-7 cursor-pointer' />
+                </DropdownMenuTrigger>
+                <DropdownMenuContent>
+                  <DropdownMenuItem onClick={() => setEditMode(true)}>
+                    Edit beat
+                  </DropdownMenuItem>
+
+                  <DropdownMenuItem onClick={handleDeleteBeat}>
+                    Delete beat
+                  </DropdownMenuItem>
+                </DropdownMenuContent>
+              </DropdownMenu>
+            </span>
+            <div>{description}</div>
           </div>
           <div className={BeatRowClasses}>
             Duration: <div>{duration}</div>
@@ -30,9 +58,8 @@ export default function Beat({ beat }: { beat: Beat }) {
           <div className={BeatRowClasses}>
             Camera Angle: <div>{cameraAngle}</div>
           </div>
-        </>
+        </div>
       )}
-      <Button onClick={() => setEditMode(true)}>Edit beat</Button>
     </div>
   );
 }

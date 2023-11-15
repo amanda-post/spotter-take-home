@@ -90,7 +90,7 @@ export default function Act({
   };
 
   return (
-    <div className='p-10'>
+    <div className='p-5'>
       <div className='border-y-black border-y-2 font-bold flex justify-between items-center'>
         <span>
           {editActMode ? (
@@ -121,8 +121,9 @@ export default function Act({
             className='flex p-4 cursor-pointer'
             onClick={() => toggleEditBeatMode(true)}
           >
-            <PlusCircle /> Add new beat
+            <PlusCircle className='mr-3' /> Add new beat
           </span>
+
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
               <Menu className='cursor-pointer' />

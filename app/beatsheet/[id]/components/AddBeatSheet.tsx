@@ -1,5 +1,5 @@
 'use client';
-import { MinusCircle, PlusCircle } from 'lucide-react';
+import { PlusCircle } from 'lucide-react';
 import { useState } from 'react';
 import { createBeatSheet } from '~/app/actions';
 import { Button } from '~/components/ui/button';
@@ -22,24 +22,24 @@ export default function AddBeatSheet() {
   };
 
   return (
-    <div className='p-4 flex'>
+    <div className='flex'>
       <div className='flex cursor-pointer' onClick={toggleForm}>
-        {showForm ? (
+        {showForm ? null : (
           <>
-            <MinusCircle /> Stop adding
-          </>
-        ) : (
-          <>
-            <PlusCircle /> Add new beatsheet
+            <PlusCircle className='mr-3' /> Add new beatsheet
           </>
         )}
       </div>
 
       {showForm && (
         <div>
-          <div>
-            Title: <Input value={title} onChange={handleTextChange} />
+          <div className='space-y-3'>
+            New Beat Sheet Title:{' '}
+            <Input value={title} onChange={handleTextChange} />
             <Button onClick={handleSubmit}>Save</Button>
+            <Button variant='ghost' onClick={toggleForm}>
+              Cancel
+            </Button>
           </div>
         </div>
       )}

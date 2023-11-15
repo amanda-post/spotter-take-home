@@ -28,13 +28,13 @@ export default function BeatSheetPage({ params }: { params: { id: string } }) {
         .catch((err) => {
           console.log(err);
         });
-  }, [id]);
+  });
 
   return (
-    <main className='p-10'>
+    <main className='p-5'>
       <ArrowLeft className='cursor-pointer' onClick={returnToDashboard} />
       <div className='flex flex-col'>
-        <h3>{beatSheet?.title}</h3>
+        <div className='text-xl justify-self-center'>{beatSheet?.title}</div>
         {beatSheet && !!beatSheet.acts.length ? (
           <>
             {beatSheet.acts.map((act, i) => (

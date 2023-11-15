@@ -42,26 +42,31 @@ export default function BeatForm({
     } else if (beatData?.id) {
       updateBeat(beatData.id, { description, duration, cameraAngle });
     }
+    setDescription('');
+    setCameraAngle('');
+    setDuration(0);
+    setShowForm(false);
   };
 
   return (
-    <div className='p-10 flex'>
+    <div className='pt-5 pl-5 flex'>
       {showForm && (
         <div>
           <div>
-            Description:{' '}
+            <span className='font-bold'>Description: </span>
             <Input value={description} onChange={handleDescriptionChange} />
-            Duration of beat (seconds):{' '}
+            <span className='font-bold'>Duration of beat (seconds): </span>
             <Input
               type='number'
               value={duration}
               onChange={handleDurationChange}
             />
-            Camera angle:{' '}
+            <span className='font-bold'>Camera angle: </span>
             <Input value={cameraAngle} onChange={handleCameraAngleChange} />
             <Button
               onClick={handleSubmit}
               disabled={!description || !duration || !cameraAngle}
+              className='mt-2'
             >
               Save
             </Button>
